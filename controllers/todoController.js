@@ -3,7 +3,7 @@ let data = [{item: 'Get milk'}, {item: 'Kick some coding ass'}];
 let urlencodedParser = bodyParser.urlencoded({extended: false});
 
 module.exports = function(app) {
-    app.get('/todo', (req, res) => {
+    app.get('/', (req, res) => {
         res.render('todo', {todos: data});
     });
 
@@ -12,7 +12,10 @@ module.exports = function(app) {
         res.json(data);
     });
 
-    app.delete('/todo', (req, res) => {
-
+    app.delete('/todo/:item', (req, res) => {
+        data = data.filter(function(todo) {
+            return todo.item.replace(/ /g, '-') !== req.params.item;
+        });
+        res.json(data);
     });
 };
